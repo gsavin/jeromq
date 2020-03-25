@@ -86,7 +86,14 @@ public final class Timers
 
     public Timers()
     {
-        this(() -> TimeUnit.NANOSECONDS.toMillis(Clock.nowNS()));
+        clock = new Supplier<Long>()
+        {
+            @Override
+            public Long get()
+            {
+                return TimeUnit.NANOSECONDS.toMillis(Clock.nowNS());
+            }
+        };
     }
 
     /**

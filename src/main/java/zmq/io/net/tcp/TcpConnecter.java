@@ -161,6 +161,12 @@ public class TcpConnecter extends Own implements IPollEvents
     }
 
     @Override
+    public void acceptEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void timerEvent(int id)
     {
         assert (id == RECONNECT_TIMER_ID);

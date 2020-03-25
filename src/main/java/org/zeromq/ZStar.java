@@ -166,10 +166,10 @@ public class ZStar implements ZAgent
          * @deprecated use {@link #create(ZContext, Socket, int, Star, Object...)} instead.
          */
         @Deprecated
-        default Star create(ZContext ctx, Socket mic, Selector sel, int count, Star previous, Object... args)
-        {
+        Star create(ZContext ctx, Socket mic, Selector sel, int count, Star previous, Object... args);
+        /*{
             return this.create(ctx, mic, count, previous, args);
-        }
+        }*/
 
         /**
          * Creates a star.
@@ -319,7 +319,13 @@ public class ZStar implements ZAgent
     public ZStar(final ZContext context, final SelectorCreator selector, final Fortune fortune, String motdelafin,
                  final Object... bags)
     {
-        this(context, fortune, ZAgent.Creator::create, motdelafin, bags);
+        this(context, fortune, new BiFunction<Socket, String, ZAgent>() {
+            @Override
+            public ZAgent apply(Socket socket, String s)
+            {
+                return ZAgent.Creator.create(socket, s);
+            }
+        }, motdelafin, bags);
     }
 
     /**
@@ -336,7 +342,13 @@ public class ZStar implements ZAgent
      */
     public ZStar(final ZContext context, final Fortune fortune, String motdelafin, final Object... bags)
     {
-        this(context, fortune, ZAgent.Creator::create, motdelafin, bags);
+        this(context, fortune, new BiFunction<Socket, String, ZAgent>() {
+            @Override
+            public ZAgent apply(Socket socket, String s)
+            {
+                return ZAgent.Creator.create(socket, s);
+            }
+        }, motdelafin, bags);
     }
 
     /**

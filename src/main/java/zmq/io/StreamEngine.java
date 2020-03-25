@@ -529,6 +529,18 @@ public class StreamEngine implements IEngine, IPollEvents
     }
 
     @Override
+    public void connectEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void acceptEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void restartOutput()
     {
         if (ioError) {
@@ -875,8 +887,20 @@ public class StreamEngine implements IEngine, IPollEvents
         return true;
     }
 
-    private final Function<Msg, Boolean> processIdentity = this::processIdentityMsg;
-    private final Supplier<Msg>          nextIdentity    = this::identityMsg;
+    private final Function<Msg, Boolean> processIdentity = new Function<Msg, Boolean>() {
+        @Override
+        public Boolean apply(Msg msg)
+        {
+            return StreamEngine.this.processIdentityMsg(msg);
+        }
+    };
+    private final Supplier<Msg>          nextIdentity    = new Supplier<Msg>() {
+        @Override
+        public Msg get()
+        {
+            return StreamEngine.this.identityMsg();
+        }
+    };
 
     private Msg nextHandshakeCommand()
     {
@@ -929,8 +953,20 @@ public class StreamEngine implements IEngine, IPollEvents
         return rc == 0;
     }
 
-    private final Function<Msg, Boolean> processHandshakeCommand = this::processHandshakeCommand;
-    private final Supplier<Msg>          nextHandshakeCommand    = this::nextHandshakeCommand;
+    private final Function<Msg, Boolean> processHandshakeCommand = new Function<Msg, Boolean>() {
+        @Override
+        public Boolean apply(Msg msg)
+        {
+            return StreamEngine.this.processHandshakeCommand(msg);
+        }
+    };
+    private final Supplier<Msg>          nextHandshakeCommand    = new Supplier<Msg>() {
+        @Override
+        public Msg get()
+        {
+            return StreamEngine.this.nextHandshakeCommand();
+        }
+    };
 
     @Override
     public void zapMsgAvailable()
@@ -1004,8 +1040,20 @@ public class StreamEngine implements IEngine, IPollEvents
         return session.pushMsg(msg);
     }
 
-    private final Function<Msg, Boolean> pushMsgToSession   = this::pushMsgToSession;
-    private final Supplier<Msg>          pullMsgFromSession = this::pullMsgFromSession;
+    private final Function<Msg, Boolean> pushMsgToSession   = new Function<Msg, Boolean>() {
+        @Override
+        public Boolean apply(Msg msg)
+        {
+            return StreamEngine.this.pushMsgToSession(msg);
+        }
+    };
+    private final Supplier<Msg>          pullMsgFromSession = new Supplier<Msg>() {
+        @Override
+        public Msg get()
+        {
+            return StreamEngine.this.pullMsgFromSession();
+        }
+    };
 
     private boolean pushRawMsgToSession(Msg msg)
     {
@@ -1015,7 +1063,13 @@ public class StreamEngine implements IEngine, IPollEvents
         return pushMsgToSession(msg);
     }
 
-    private final Function<Msg, Boolean> pushRawMsgToSession = this::pushRawMsgToSession;
+    private final Function<Msg, Boolean> pushRawMsgToSession = new Function<Msg, Boolean>() {
+        @Override
+        public Boolean apply(Msg msg)
+        {
+            return StreamEngine.this.pushRawMsgToSession(msg);
+        }
+    };
 
     private boolean writeCredential(Msg msg)
     {
@@ -1037,7 +1091,13 @@ public class StreamEngine implements IEngine, IPollEvents
         return decodeAndPush.apply(msg);
     }
 
-    private final Function<Msg, Boolean> writeCredential = this::writeCredential;
+    private final Function<Msg, Boolean> writeCredential = new Function<Msg, Boolean>() {
+        @Override
+        public Boolean apply(Msg msg)
+        {
+            return StreamEngine.this.writeCredential(msg);
+        }
+    };
 
     private Msg pullAndEncode()
     {
@@ -1052,7 +1112,13 @@ public class StreamEngine implements IEngine, IPollEvents
         return msg;
     }
 
-    private final Supplier<Msg> pullAndEncode = this::pullAndEncode;
+    private final Supplier<Msg> pullAndEncode = new Supplier<Msg>() {
+        @Override
+        public Msg get()
+        {
+            return StreamEngine.this.pullAndEncode();
+        }
+    };
 
     private boolean decodeAndPush(Msg msg)
     {
@@ -1087,7 +1153,13 @@ public class StreamEngine implements IEngine, IPollEvents
         return true;
     }
 
-    private final Function<Msg, Boolean> decodeAndPush = this::decodeAndPush;
+    private final Function<Msg, Boolean> decodeAndPush = new Function<Msg, Boolean>() {
+        @Override
+        public Boolean apply(Msg msg)
+        {
+            return StreamEngine.this.decodeAndPush(msg);
+        }
+    };
 
     private boolean pushOneThenDecodeAndPush(Msg msg)
     {
@@ -1098,9 +1170,21 @@ public class StreamEngine implements IEngine, IPollEvents
         return rc;
     }
 
-    private final Function<Msg, Boolean> pushOneThenDecodeAndPush = this::pushOneThenDecodeAndPush;
+    private final Function<Msg, Boolean> pushOneThenDecodeAndPush = new Function<Msg, Boolean>() {
+        @Override
+        public Boolean apply(Msg msg)
+        {
+            return StreamEngine.this.pushOneThenDecodeAndPush(msg);
+        }
+    };
 
-    private final Supplier<Msg> producePingMessage = this::producePingMessage;
+    private final Supplier<Msg> producePingMessage = new Supplier<Msg>() {
+        @Override
+        public Msg get()
+        {
+            return StreamEngine.this.producePingMessage();
+        }
+    };
 
     //  Function to handle network disconnections.
     private void error(ErrorReason error)

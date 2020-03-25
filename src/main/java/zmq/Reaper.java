@@ -81,6 +81,30 @@ final class Reaper extends ZObject implements IPollEvents, Closeable
     }
 
     @Override
+    public void outEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void connectEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void acceptEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void timerEvent(int id)
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     protected void processStop()
     {
         terminating.set(true);

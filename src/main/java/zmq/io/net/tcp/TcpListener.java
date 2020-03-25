@@ -77,6 +77,24 @@ public class TcpListener extends Own implements IPollEvents
     }
 
     @Override
+    public void inEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void outEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void connectEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void acceptEvent()
     {
         SocketChannel channel;
@@ -130,6 +148,12 @@ public class TcpListener extends Own implements IPollEvents
         launchChild(session);
         sendAttach(session, engine, false);
         socket.eventAccepted(endpoint, channel);
+    }
+
+    @Override
+    public void timerEvent(int id)
+    {
+        throw new UnsupportedOperationException();
     }
 
     //  Close the listening socket.

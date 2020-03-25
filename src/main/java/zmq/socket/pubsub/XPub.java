@@ -219,7 +219,12 @@ public class XPub extends SocketBase
         if (manual) {
             manualSubscriptions.rm(pipe, sendUnsubscription, this);
 
-            subscriptions.rm(pipe, (p, d, s, self)-> { }, this);
+            subscriptions.rm(pipe, new Mtrie.IMtrieHandler() {
+                @Override
+                public void invoke(Pipe pipe, byte[] data, int size, XPub arg)
+                {
+                }
+            }, this);
         }
         else {
             //  Remove the pipe from the trie. If there are topics that nobody

@@ -55,4 +55,28 @@ public class Push extends SocketBase
     {
         return lb.hasOut();
     }
+
+    @Override
+    public void outEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void connectEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void acceptEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void timerEvent(int id)
+    {
+        throw new UnsupportedOperationException();
+    }
 }

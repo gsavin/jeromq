@@ -14,6 +14,7 @@ import zmq.util.Draft;
 import zmq.util.Utils;
 import zmq.util.Wire;
 import zmq.util.function.BiFunction;
+import zmq.util.function.Supplier;
 
 /**
  * Needle for de/serialization of data within a frame.
@@ -35,9 +36,15 @@ public final class ZNeedle
         needle = ByteBuffer.wrap(data);
     }
 
-    private void checkAvailable(int size)
+    private void checkAvailable(final int size)
     {
-        Utils.checkArgument(needle.position() + size <= needle.limit(), () -> "Unable to handle " + size + " bytes");
+        Utils.checkArgument(needle.position() + size <= needle.limit(), new Supplier<String>() {
+            @Override
+            public String get()
+            {
+                return "Unable to handle " + size + " bytes";
+            }
+        });
     }
 
     private void forward(int size)
@@ -80,7 +87,9 @@ public final class ZNeedle
     public int getNumber2()
     {
         checkAvailable(2);
-        return get(Wire::getUInt16, 2);
+        final int value = Wire.getUInt16(needle, needle.position());
+        forward(2);
+        return value;
     }
 
     //  Put a 4-byte number to the frame
@@ -95,7 +104,9 @@ public final class ZNeedle
     public int getNumber4()
     {
         checkAvailable(4);
-        return get(Wire::getUInt32, 4);
+        final int value = Wire.getUInt32(needle, needle.position());
+        forward(4);
+        return value;
     }
 
     //  Put a 8-byte number to the frame
@@ -109,7 +120,9 @@ public final class ZNeedle
     public long getNumber8()
     {
         checkAvailable(8);
-        return get(Wire::getUInt64, 8);
+        final long value = Wire.getUInt64(needle, needle.position());
+        forward(8);
+        return value;
     }
 
     //  Put a block to the frame

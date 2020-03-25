@@ -87,8 +87,8 @@ public class ZContext implements Closeable
     private ZContext(Context context, boolean main, int ioThreads)
     {
         // Android compatibility: not using ConcurrentHashMap.newKeySet()
-        this.sockets = Collections.newSetFromMap(new ConcurrentHashMap<>());
-        this.selectors = Collections.newSetFromMap(new ConcurrentHashMap<>());
+        this.sockets = Collections.newSetFromMap(new ConcurrentHashMap<Socket, Boolean>());
+        this.selectors = Collections.newSetFromMap(new ConcurrentHashMap<Selector, Boolean>());
         this.context = context;
         this.ioThreads = ioThreads;
         this.main = main;

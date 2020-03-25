@@ -115,12 +115,18 @@ public final class ZTicket
 
     public ZTicket()
     {
-        this(() -> TimeUnit.NANOSECONDS.toMillis(Clock.nowNS()));
+        this(new Supplier<Long>() {
+            @Override
+            public Long get()
+            {
+                return TimeUnit.NANOSECONDS.toMillis(Clock.nowNS());
+            }
+        });
     }
 
     ZTicket(Supplier<Long> clock)
     {
-        this(clock, new ArrayList<>());
+        this(clock, new ArrayList<Ticket>());
     }
 
     ZTicket(Supplier<Long> clock, List<Ticket> tickets)

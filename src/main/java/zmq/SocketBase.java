@@ -119,6 +119,30 @@ public abstract class SocketBase extends Own implements IPollEvents, Pipe.IPipeE
         mailbox = new Mailbox(parent, "socket-" + sid, tid);
     }
 
+    @Override
+    public void outEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void connectEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void acceptEvent()
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void timerEvent(int id)
+    {
+        throw new UnsupportedOperationException();
+    }
+
     //  Concrete algorithms for the x- methods are to be defined by
     //  individual socket types.
     protected abstract void xattachPipe(Pipe pipe, boolean subscribe2all, boolean isLocallyInitiated);

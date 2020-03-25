@@ -164,9 +164,16 @@ public class Utils
         return builder.toString();
     }
 
-    public static void checkArgument(boolean expression, String errorMessage)
+    public static void checkArgument(boolean expression, final String errorMessage)
     {
-        checkArgument(expression, () -> errorMessage);
+        checkArgument(expression, new Supplier<String>()
+        {
+            @Override
+            public String get()
+            {
+                return errorMessage;
+            }
+        });
     }
 
     public static void checkArgument(boolean expression, Supplier<String> errorMessage)

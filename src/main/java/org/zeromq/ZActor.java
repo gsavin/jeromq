@@ -1,6 +1,7 @@
 package org.zeromq;
 
 import java.nio.channels.SelectableChannel;
+import java.nio.channels.Selector;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -509,6 +510,12 @@ public class ZActor extends ZStar
         @Override
         public void party(ZContext ctx)
         {
+        }
+
+        @Override
+        public Star create(ZContext ctx, Socket mic, Selector sel, int count, Star previous, Object... args)
+        {
+            return this.create(ctx, mic, count, previous, args);
         }
     }
 
